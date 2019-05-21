@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvte.dao.UserTokenMapper">
+
+  <!--<cache eviction="LRU" type="com.cvte.dao.redis.RedisCache"/>-->
+
+    <sql id="base_column_list">
+        user_id, token, expire_time
+    </sql>
+
+    <select id="selectByToken" parameterType="String" resultType="com.cvte.po.UserToken">
+        select
+        <include refid="base_column_list"/>
+        from ts_user_token
+        where token = #{token} and is_deleted = 0
+    </select>
+
+    <insert id="insertOrUpdate" parameterType="com.cvte.po.UserToken">
+        replace into ts_user_token(user_id, token, expire_time)
+        values(#{userId}, #{token}, #{expireTime})
+    </insert>
+
+    <update id="updateExpireTimeByUserId" parameterType="com.cvte.po.UserToken">
+        update ts_user_token
+        set expire_time = #{expireTime}
+        where user_id = #{userId} and is_deleted = 0
+    </update>
+
+</mapper>
