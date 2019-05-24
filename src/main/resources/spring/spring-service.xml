@@ -16,7 +16,7 @@
     <context:component-scan base-package="com.cvte.service" />
     <context:component-scan base-package="com.cvte.aop" />
     <context:component-scan base-package="com.cvte.interceptor" />
-    <context:component-scan base-package="com.cvte.util" />
+    <context:component-scan base-package="com.cvte.repository" />
 
 
     <!-- 配置事务管理器 -->

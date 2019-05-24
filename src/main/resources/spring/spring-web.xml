@@ -63,15 +63,22 @@
         <property name="suffix" value=".jsp" />
     </bean>
 
-    <!--token校验拦截器-->
+
     <mvc:interceptors>
+        <!--token校验拦截器-->
         <mvc:interceptor>
             <!-- 进行拦截：/**表示拦截所有controller -->
             <mvc:mapping path="/**" />
             <!-- 不进行拦截 -->
             <mvc:exclude-mapping path="/user/login" />
-
+            <mvc:exclude-mapping path="/{shortUrl}" />
             <bean class="com.cvte.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+
+        <!--黑名单校验拦截器-->
+        <mvc:interceptor>
+            <mvc:mapping path="/url/short_url" />
+            <bean class="com.cvte.interceptor.BlackListInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
 

@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * @author linxiaoyi
- * @date 2019/5/7
+ * @date 2019/05/21
  */
 public class UserToken implements Serializable {
 

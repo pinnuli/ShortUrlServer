@@ -1,4 +1,4 @@
-package com.cvte.util;
+package com.cvte.repository;
 
 import com.cvte.common.StaticConfig;
 import com.cvte.dao.UserMapper;
@@ -6,22 +6,21 @@ import com.cvte.dao.UserTokenMapper;
 import com.cvte.dao.redis.TokenRedisDao;
 import com.cvte.po.User;
 import com.cvte.po.UserToken;
+import com.cvte.util.DateTimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author linxiaoyi
- * @date 2019/4/29
+ * @date 2019/5/23
  */
 @Component
-public class TokenUtil {
+public class UserTokenRepository {
 
     @Autowired
     private UserMapper userMapper;
@@ -32,27 +31,24 @@ public class TokenUtil {
     @Autowired
     private TokenRedisDao tokenRedisDao;
 
-    private static final Logger log = LoggerFactory.getLogger(TokenUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(UserTokenRepository.class);
 
-    @Transactional
-    public String issueToken(Integer userId) {
-        UserToken userToken = new UserToken(userId, getToken());
+    public void addToken(UserToken userToken) {
         try {
-            if (tokenRedisDao.existsToken(userId)) {
-                String oldToken = tokenRedisDao.getToken(userId);
+            if (tokenRedisDao.existsToken(userToken.getUserId())) {
+                String oldToken = tokenRedisDao.getToken(userToken.getUserId());
                 tokenRedisDao.delUser(oldToken);
             }
-            User user = userMapper.getUserById(userId);
-            tokenRedisDao.setToken(userId, userToken.getToken());
+            User user = userMapper.getUserById(userToken.getUserId());
+            tokenRedisDao.setToken(userToken.getUserId(), userToken.getToken());
             tokenRedisDao.setUser(userToken.getToken(), user);
         } catch (JedisConnectionException e) {
             log.error("can not connect to redis!");
             userTokenMapper.insertOrUpdate(userToken);
         }
-        return userToken.getToken();
     }
 
-    public boolean checkToken(String token) {
+    public boolean getToken(String token) {
         try {
             if (tokenRedisDao.existsUser(token)) {
                 return true;
@@ -65,6 +61,7 @@ public class TokenUtil {
                 return true;
             }
         } catch (JedisConnectionException e) {
+            e.printStackTrace();
             log.error("can not connect to redis!");
             UserToken userToken = userTokenMapper.selectByToken(token);
             return userToken != null && userToken.getExpireTime().getTime() > System.currentTimeMillis();
@@ -72,7 +69,6 @@ public class TokenUtil {
         return false;
     }
 
-    @Transactional
     public User updateToken(String token) {
         User user;
         try {
@@ -88,7 +84,6 @@ public class TokenUtil {
         }
     }
 
-    @Transactional
     public void deleteToken(Integer userId) {
         try {
             String token = tokenRedisDao.getToken(userId);
@@ -100,9 +95,4 @@ public class TokenUtil {
             userTokenMapper.updateExpireTimeByUserId(userId, new Date());
         }
     }
-
-    private String getToken() {
-        return UUID.randomUUID().toString().replace("-", "");
-    }
-
 }

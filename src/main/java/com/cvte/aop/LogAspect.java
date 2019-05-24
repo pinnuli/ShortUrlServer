@@ -1,9 +1,11 @@
 package com.cvte.aop;
 
-import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -14,9 +16,10 @@ import java.util.Arrays;
  */
 @Component
 @Aspect
+@Order(1)
 public class LogAspect {
 
-    private static final Logger log = Logger.getLogger(LogAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
     /**
      * 功能开始时间

@@ -13,6 +13,8 @@ public class User implements Serializable {
 
     private String username;
 
+    private Boolean isBlack;
+
     public User(){}
 
     public User(Integer userId) {
@@ -35,4 +37,11 @@ public class User implements Serializable {
         this.username = username == null ? null : username.trim();
     }
 
+    public Boolean getIsBlack() {
+        return isBlack;
+    }
+
+    public void setIsBlack(Boolean isBlack) {
+        this.isBlack = isBlack;
+    }
 }

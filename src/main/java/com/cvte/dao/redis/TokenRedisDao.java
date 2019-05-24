@@ -26,16 +26,21 @@ public class TokenRedisDao {
     private Jedis jedis = new Jedis("127.0.0.1", 6379, 500);
 
     public boolean existsToken(Integer userId) {
-        return jedis.exists(generateKey(TOKEN_USER_TOKEN_KEY_PREFIX, userId.toString()));
+        boolean result = jedis.exists(generateKey(TOKEN_USER_TOKEN_KEY_PREFIX, userId.toString()));
+        jedis.close();
+        return result;
     }
 
     public void setToken(Integer userId, String token){
         jedis.set(generateKey(TOKEN_USER_TOKEN_KEY_PREFIX, userId.toString()), token);
         expireToken(userId);
+        jedis.close();
     }
 
     public String getToken(Integer userId) {
-        return jedis.get(generateKey(TOKEN_USER_TOKEN_KEY_PREFIX, userId.toString()));
+        String result = jedis.get(generateKey(TOKEN_USER_TOKEN_KEY_PREFIX, userId.toString()));
+        jedis.close();
+        return result;
     }
 
     public void delToken(Integer userId) {
@@ -44,23 +49,29 @@ public class TokenRedisDao {
 
     public void expireToken(Integer userId) {
         jedis.expire(generateKey(TOKEN_USER_TOKEN_KEY_PREFIX, userId.toString()), StaticConfig.TOKEN_LIFECYCLE);
+        jedis.close();
     }
 
     public boolean existsUser(String token) {
-        return jedis.exists(generateKey(TOKEN_USER_INFO_KEY_PREFIX, token));
+        boolean result = jedis.exists(generateKey(TOKEN_USER_INFO_KEY_PREFIX, token));
+        jedis.close();
+        return result;
     }
 
     public void setUser(String token, User user) {
         jedis.set(generateKey(TOKEN_USER_INFO_KEY_PREFIX, token), JsonUtil.objectToJson(user));
+        jedis.close();
     }
 
     public User getUser(String token) {
         String jsonUser = jedis.get(generateKey(TOKEN_USER_INFO_KEY_PREFIX, token));
+        jedis.close();
         return (User)JsonUtil.jsonToObject(jsonUser, User.class);
     }
 
     public void delUser(String token) {
         jedis.del(generateKey(TOKEN_USER_INFO_KEY_PREFIX, token));
+        jedis.close();
     }
 
     private String generateKey(String prefix, String postfix) {

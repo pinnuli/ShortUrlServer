@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvte.dao.UrlMapper">
+
+    <insert id="insert" parameterType="com.cvte.po.Url">
+        insert into sc_url_info (user_id, short_url, long_url)
+        values (#{userId}, #{shortUrl}, #{longUrl})
+    </insert>
+
+    <select id="selectLongUrlByShortUrl" parameterType="String" resultType="String">
+        select long_url from sc_url_info
+        where short_url = #{shortUrl} and is_deleted = 0
+    </select>
+</mapper>
