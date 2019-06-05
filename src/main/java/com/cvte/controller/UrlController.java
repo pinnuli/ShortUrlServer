@@ -2,7 +2,7 @@ package com.cvte.controller;
 
 import com.cvte.common.ServerResponse;
 import com.cvte.po.User;
-import com.cvte.service.ShortUrlService;
+import com.cvte.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,24 +20,25 @@ import java.util.Map;
 public class UrlController {
 
     @Autowired
-    private ShortUrlService shortUrlService;
+    private UrlService urlService;
 
     @PostMapping("/url/short_url")
-    public ServerResponse getShortUrl(@RequestAttribute User currentUser, @RequestParam String longUrl, HttpServletRequest request) {
-        String shortUrl = shortUrlService.generateShortUrl(currentUser.getUserId(), longUrl);
+    public ServerResponse getShortUrl(@RequestAttribute User currentUser, @RequestParam String longUrl, HttpServletRequest request) throws IOException {
+        String shortUrl = urlService.getShortUrl(currentUser.getUserId(), longUrl);
         Map<String, String> data = new HashMap<>();
         data.put("shortUrl", getAbsoluteUrl(request, shortUrl));
         return ServerResponse.createBySuccess(data);
     }
 
     @GetMapping("/{shortUrl}")
-    public void redirectToLongUrl(HttpServletRequest request, HttpServletResponse response, @PathVariable String shortUrl) throws IOException {
-        String longUrl = shortUrlService.visitShortUrl(shortUrl);
+    public ServerResponse redirectToLongUrl(HttpServletRequest request, HttpServletResponse response, @PathVariable String shortUrl) throws IOException {
+        String longUrl = urlService.visitShortUrl(shortUrl);
         if (longUrl == null) {
             longUrl = getAbsoluteUrl(request, "not_found_error.jsp");
         }
-        response.setStatus(301);
-        response.sendRedirect(longUrl);
+        Map<String, String> data = new HashMap<>();
+        data.put("longUrl", longUrl);
+        return ServerResponse.createBySuccess(data);
     }
 
     private String getAbsoluteUrl(HttpServletRequest request, String subPath) {

@@ -1,9 +1,7 @@
 package com.cvte.service.impl;
 
-import com.cvte.service.ShortUrlService;
+import com.cvte.service.UrlService;
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * ShortUrlServiceImpl Tester.
+ * UrlServiceImpl Tester.
  *
  * @author <Authors name>
  * @version 1.0
@@ -20,18 +18,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:spring/spring-*.xml"})
-public class ShortUrlServiceImplTest {
+public class UrlServiceImplTest {
 
-    private final static Logger log = LoggerFactory.getLogger(ShortUrlServiceImplTest.class);
+    private final static Logger log = LoggerFactory.getLogger(UrlServiceImplTest.class);
 
     @Autowired
-    private ShortUrlService shortUrlService;
+    private UrlService urlService;
     /**
      * Method: getLongUrl(String shortUrl)
      */
     @Test
     public void testGetLongUrl() throws Exception {
-        /*System.out.println(shortUrlService.visitShortUrl("Vft7eiS"));*/
+        /*System.out.println(urlService.visitShortUrl("Vft7eiS"));*/
         log.info("你好");
     }
 

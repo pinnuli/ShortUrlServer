@@ -20,8 +20,9 @@ public class Url implements Serializable {
 
     public Url() {}
 
-    public Url(Integer userId, String longUrl) {
+    public Url(Integer userId, String shortUrl, String longUrl) {
         this.userId = userId;
+        this.shortUrl = shortUrl;
         this.longUrl = longUrl;
     }
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvte.dao.UrlIndexMapper">
+
+    <select id="getUrlIndex" resultType="int">
+        select  index_value from sc_url_index
+    </select>
+
+    <update id="updateIndex" parameterType="int">
+        update sc_url_index set index_value = (index_value + 1)
+        where index_id = #{index}
+    </update>
+</mapper>

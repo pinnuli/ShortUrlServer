@@ -1,6 +1,7 @@
 package com.cvte.dao;
 
 import com.cvte.po.Url;
+import com.cvte.util.ShortUrlUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.IOException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 
@@ -25,16 +27,5 @@ public class UrlMapperTest {
     @Autowired
     private UrlMapper urlMapper;
 
-    @Test
-    public void testInsert() {
-        Url url = new Url(1, "https://www.baidu.com/s?\n" +
-                "wd=%E7%9F%AD%E9%93%BE%E6%8E%A5&rsvspt=1&rsviqid=0xb3cd9f3f000072ce&issp=1&f=3&rsvbp=1&rsvidx=2&ie=utf-\n" +
-                "8&rqlang=cn&tn=baiduhomepg&rsventer=1&oq=%25E7%259F%25AD%25E9%2593%25BE&rsvt=ff9cPd%2B8k7S6nG0RKSj8qsh%2FqrnL9um5osA");
-        url.setShortUrl("Vft7eiS");
-        try {
-            urlMapper.insert(url);
-        } catch (DataAccessException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    private UrlIndexMapper urlIndexMapper;
 }

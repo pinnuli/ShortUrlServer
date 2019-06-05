@@ -1,17 +1,19 @@
 package com.cvte.service;
 
+import java.io.IOException;
+
 /**
  * @author linxiaoyi
  * @date 2019/5/21
  */
-public interface ShortUrlService {
+public interface UrlService {
 
     /**
      * @param userId 用户id
      * @param longUrl 长链接
      * @return 生成的短链接
      */
-    String generateShortUrl(Integer userId, String longUrl);
+    String getShortUrl(Integer userId, String longUrl) throws IOException;
 
     /**
      * @param shortUrl 短链接
