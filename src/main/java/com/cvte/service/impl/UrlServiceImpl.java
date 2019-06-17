@@ -1,8 +1,12 @@
 package com.cvte.service.impl;
 
+import com.aliyun.openservices.ons.api.Message;
+import com.cvte.common.StaticConfig;
+import com.cvte.dao.UrlMapper;
 import com.cvte.po.Url;
 import com.cvte.repository.UrlIndexRepository;
 import com.cvte.repository.UrlRepository;
+import com.cvte.rocketmq.RocketMQProducer;
 import com.cvte.service.UrlService;
 import com.cvte.util.ShortUrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,12 @@ public class UrlServiceImpl implements UrlService {
     @Autowired
     private UrlIndexRepository urlIndexRepository;
 
+    @Autowired
+    private UrlMapper urlMapper;
+
+    @Autowired
+    private RocketMQProducer rocketMQProducer;
+
     private static char[][] shortUrlElement;
 
     static {
@@ -39,7 +49,18 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     public String visitShortUrl(String shortUrl) {
-        return urlRepository.getLongUrl(shortUrl);
+        String longUrl = urlRepository.getLongUrl(shortUrl);
+        if (longUrl != null) {
+            // 发送urlId到消息队列以更新访问数量
+            Message message=new Message(StaticConfig.ROCKETMQ_TOPIC,"visit_count", shortUrl.getBytes());
+            rocketMQProducer.sendNormalMessage(message, StaticConfig.ROCKETMQ_GROUP_ID);
+        }
+        return longUrl;
+    }
+
+    @Override
+    public void increaseVisitCount(String shortUrl) {
+        urlMapper.increaseVisitCount(shortUrl);
     }
 
     /**

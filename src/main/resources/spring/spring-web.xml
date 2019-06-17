@@ -71,7 +71,8 @@
             <mvc:mapping path="/**" />
             <!-- 不进行拦截 -->
             <mvc:exclude-mapping path="/user/login" />
-            <mvc:exclude-mapping path="/{shortUrl}" />
+            <mvc:exclude-mapping path="/user/register" />
+            <mvc:exclude-mapping path="/url/long_url"/>
             <bean class="com.cvte.interceptor.LoginInterceptor" />
         </mvc:interceptor>
 
@@ -82,4 +83,23 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <!--&lt;!&ndash; rocketmq配置 &ndash;&gt;
+    <context:property-placeholder location="classpath:rocketmq.properties" />
+    <bean id="rocketmqConsumer" class="org.apache.rocketmq.client.consumer.DefaultMQPushConsumer" init-method="start" destroy-method="shutdown">
+        <property name="consumerGroup" value="${rocketmq.consumerGroup}" />
+        <property name="namesrvAddr" value="${rocketmq.namesrvAddr}" />
+        <property name="messageListener" ref="messageListeners" />
+        <property name="subscription">
+            <map>
+                <entry key="${rocketmq.topic}" value="${rocketmq.tags}" />
+            </map>
+        </property>
+    </bean>
+
+
+    <bean id="rocketMQProducer" class="com.th.producer.RocketMQProducer" init-method="init" destroy-method="destroy">
+        <property name="producerGroup" value="${rocketmq.producer.group}" />
+        <property name="namesrvAddr" value="${rocketmq.namesrvAddr}" />
+        &lt;!&ndash; 失败重试次数 <property name="retryTimes" value="${rocketmq.producer.retryTimes}" /> &ndash;&gt;
+    </bean>-->
 </beans>

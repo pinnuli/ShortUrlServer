@@ -1,5 +1,6 @@
 package com.cvte.service;
 
+import com.cvte.po.User;
 import com.cvte.vo.UserVo;
 
 /**
@@ -9,10 +10,10 @@ import com.cvte.vo.UserVo;
 public interface UserService {
 
     /**
-     * @param userId 用户id
+     * @param user 用户信息
      * @return token
      */
-    String login(Integer userId);
+    String login(User user);
 
     /**
      * @param userId 用户id
@@ -24,4 +25,6 @@ public interface UserService {
      * @return 用户信息
      */
     UserVo getUserInfo(Integer userId);
+
+    void register(User user);
 }

@@ -20,4 +20,10 @@ public interface UrlService {
      * @return 对应长链接
      */
     String visitShortUrl(String shortUrl);
+
+    /**
+     * 增加短链访问次数
+     * @param shortUrl 短链
+     */
+    void increaseVisitCount(String shortUrl);
 }

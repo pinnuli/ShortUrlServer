@@ -23,7 +23,11 @@ public class TokenRedisDao {
      */
     private final static String TOKEN_USER_TOKEN_KEY_PREFIX = "token_user_token_";
 
-    private Jedis jedis = new Jedis("127.0.0.1", 6379, 500);
+    private Jedis jedis = new Jedis("106.14.224.12", 6379, 2000);
+
+    {
+        jedis.auth("123456");
+    }
 
     public boolean existsToken(Integer userId) {
         boolean result = jedis.exists(generateKey(TOKEN_USER_TOKEN_KEY_PREFIX, userId.toString()));

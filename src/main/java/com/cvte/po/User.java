@@ -15,6 +15,16 @@ public class User implements Serializable {
 
     private Boolean isBlack;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    private String password;
+
     public User(){}
 
     public User(Integer userId) {

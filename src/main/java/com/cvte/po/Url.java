@@ -10,6 +10,16 @@ import java.io.Serializable;
  */
 public class Url implements Serializable {
 
+    public Integer getUrlId() {
+        return urlId;
+    }
+
+    public void setUrlId(Integer urlId) {
+        this.urlId = urlId;
+    }
+
+    private Integer urlId;
+
     private Integer userId;
 
     private String shortUrl;

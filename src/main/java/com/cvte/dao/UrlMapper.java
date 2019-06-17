@@ -13,4 +13,6 @@ public interface UrlMapper {
     void insert (Url url) throws DataAccessException;
 
     String selectLongUrlByShortUrl(String shortUrl);
+
+    void increaseVisitCount(String shortUrl);
 }

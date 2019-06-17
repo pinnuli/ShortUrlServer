@@ -25,4 +25,14 @@ public class StaticConfig {
      * redis缓存默认有效期
      */
     public static final Integer DEFAULT_CACHE_EXPIRE = 259200;
+
+    /**
+     * rocketmq主题
+     */
+    public static final String ROCKETMQ_TOPIC = "TOPIC_URL";
+
+    /**
+     * rocketmq分组id
+     */
+    public static final String ROCKETMQ_GROUP_ID = "GID_URL";
 }

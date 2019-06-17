@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @author linxiaoyi
  * @date 2019/5/21
  */
-/*@ControllerAdvice
-@RestController*/
+@ControllerAdvice
+@RestController
 public class WebExceptionHandle {
     private static final Logger log = LoggerFactory.getLogger(WebExceptionHandle.class);
 

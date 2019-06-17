@@ -11,4 +11,9 @@
         select long_url from sc_url_info
         where short_url = #{shortUrl} and is_deleted = 0
     </select>
+
+    <update id="increaseVisitCount" parameterType="String">
+        UPDATE sc_url_info SET visit_count = (visit_count + 1)
+        WHERE short_url = #{shortUrl)}
+    </update>
 </mapper>
