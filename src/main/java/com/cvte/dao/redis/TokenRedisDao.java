@@ -23,7 +23,7 @@ public class TokenRedisDao {
      */
     private final static String TOKEN_USER_TOKEN_KEY_PREFIX = "token_user_token_";
 
-    private Jedis jedis = new Jedis("106.14.224.12", 6379, 2000);
+    private Jedis jedis = new Jedis("106.14.224.12", 6379, 20000);
 
     {
         jedis.auth("123456");

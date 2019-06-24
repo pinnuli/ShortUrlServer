@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * author@ pinnuli
  * date@ 2019/6/17
  */
-@Component
+//@Component
 public class VisitCountMQConsumerListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired

@@ -72,7 +72,7 @@
             <!-- 不进行拦截 -->
             <mvc:exclude-mapping path="/user/login" />
             <mvc:exclude-mapping path="/user/register" />
-            <mvc:exclude-mapping path="/url/long_url"/>
+            <mvc:exclude-mapping path="/short_url/visit"/>
             <bean class="com.cvte.interceptor.LoginInterceptor" />
         </mvc:interceptor>
 
@@ -82,6 +82,15 @@
             <bean class="com.cvte.interceptor.BlackListInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
+
+    <!-- 接口跨域配置 -->
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="*"
+                     allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
+                     allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+                     allow-credentials="true" />
+    </mvc:cors>
 
     <!--&lt;!&ndash; rocketmq配置 &ndash;&gt;
     <context:property-placeholder location="classpath:rocketmq.properties" />

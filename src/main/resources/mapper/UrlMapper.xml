@@ -3,17 +3,39 @@
 <mapper namespace="com.cvte.dao.UrlMapper">
 
     <insert id="insert" parameterType="com.cvte.po.Url">
-        insert into sc_url_info (user_id, short_url, long_url)
-        values (#{userId}, #{shortUrl}, #{longUrl})
+        INSERT INTO sc_url_info (user_id, short_url, long_url)
+        VALUES (#{userId}, #{shortUrl}, #{longUrl})
     </insert>
 
     <select id="selectLongUrlByShortUrl" parameterType="String" resultType="String">
-        select long_url from sc_url_info
-        where short_url = #{shortUrl} and is_deleted = 0
+        SELECT long_url
+        FROM sc_url_info
+        WHERE short_url = #{shortUrl} AND is_deleted = 0
     </select>
 
     <update id="increaseVisitCount" parameterType="String">
-        UPDATE sc_url_info SET visit_count = (visit_count + 1)
+        UPDATE sc_url_info
+        SET visit_count = (visit_count + 1)
         WHERE short_url = #{shortUrl)}
     </update>
+
+    <select id="selectCreateReportByUserIdAndDate" resultType="com.cvte.po.UrlReport">
+        SELECT
+            COUNT(short_url)  AS count,
+            DATE(create_time) AS date
+        FROM sc_url_info
+        WHERE
+            user_id = #{userId} AND create_time BETWEEN #{startDate} AND #{endDate}
+        GROUP BY DATE(create_time)
+    </select>
+
+    <select id="selectVisitReportByUserIdAndDate" resultType="com.cvte.po.UrlReport">
+        SELECT
+        sum(visit_count)  AS count,
+        DATE(create_time) AS date
+        FROM sc_url_info
+        WHERE
+        user_id = #{userId} AND create_time BETWEEN #{startDate} AND #{endDate}
+        GROUP BY DATE(create_time)
+    </select>
 </mapper>

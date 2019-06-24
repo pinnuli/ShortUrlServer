@@ -1,6 +1,11 @@
 package com.cvte.service;
 
+import com.cvte.vo.CreateReportVo;
+import com.cvte.vo.VisitReportVo;
+
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author linxiaoyi
@@ -26,4 +31,20 @@ public interface UrlService {
      * @param shortUrl 短链
      */
     void increaseVisitCount(String shortUrl);
+
+    /**
+     * @param userId 用户id
+     * @param startDate 起始日期
+     * @param endDate 结束日期
+     * @return 数据列表
+     */
+    List<CreateReportVo> getCreateReportData(Integer userId, Date startDate, Date endDate);
+
+    /**
+     * @param userId 用户id
+     * @param startDate 起始日期
+     * @param endDate 结束日期
+     * @return 数据列表
+     */
+    List<VisitReportVo> getVisitReportData(Integer userId, Date startDate, Date endDate);
 }

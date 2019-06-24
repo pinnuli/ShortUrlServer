@@ -3,11 +3,15 @@ package com.cvte.repository;
 import com.cvte.dao.UrlMapper;
 import com.cvte.dao.redis.UrlRedisDao;
 import com.cvte.po.Url;
+import com.cvte.po.UrlReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.exceptions.JedisConnectionException;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author linxiaoyi
@@ -47,5 +51,17 @@ public class UrlRepository {
         } catch (JedisConnectionException e) {
             log.error("can not connect to redis!");
         }
+    }
+
+    public void increaseVisitCount(String shortUrl) {
+        urlMapper.increaseVisitCount(shortUrl);
+    }
+    
+    public List<UrlReport> getCreateReportData(Integer userId, Date startDate, Date endDate) {
+        return urlMapper.selectCreateReportByUserIdAndDate(userId, startDate, endDate);
+    }
+
+    public List<UrlReport> getVisitReportData(Integer userId, Date startDate, Date endDate) {
+        return urlMapper.selectVisitReportByUserIdAndDate(userId, startDate, endDate);
     }
 }

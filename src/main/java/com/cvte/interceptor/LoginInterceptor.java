@@ -28,7 +28,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader("Token");
         if (token == null) {
             throw new CommonException(ResponseCode.TOKEN_NOT_FOUND);
         }

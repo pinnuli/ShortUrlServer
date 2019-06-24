@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvte.dao.ApiMapper">
+
+    <select id="selectApiList" resultMap="apiMap">
+        SELECT
+            ai.illustration AS apiIllustration,
+            ai.request_address AS requestAddress,
+            ai.request_method AS requestMethod,
+            ai.content_type AS contentType,
+            ai.response_example AS responseExample,
+            are.language AS requestExampleLanguage,
+            are.content AS requestExampleContent,
+            arp.category AS requestParameterCategory,
+            arp.name AS requestParameterName,
+            arp.type AS requestParameterType,
+            arp.illustration AS requestParameterIllustration,
+            arp.example AS requestParameterExample,
+            arsp.name AS responseParameterName,
+            arsp.type AS responseParameterType,
+            arsp.illustration AS responseParameterIllustration
+        FROM
+            sc_api_info ai
+            LEFT JOIN sc_api_request_example are ON ai.api_id = are.api_id
+            LEFT JOIN sc_api_request_parameter arp ON ai.api_id = arp.api_id
+            LEFT JOIN sc_api_response_parameter arsp ON ai.api_id = arsp.api_id
+    </select>
+
+    <resultMap id="apiMap" type="com.cvte.po.Api">
+        <result property="illustration" column="apiIllustration"/>
+        <result property="requestAddress" column="requestAddress"/>
+        <result property="requestMethod" column="requestMethod"/>
+        <result property="contentType" column="contentType"/>
+        <result property="responseExample" column="responseExample"/>
+        <collection property="requestExampleList" ofType="com.cvte.po.ApiRequestExample" javaType="java.util.List">
+            <result property="language" column="requestExampleLanguage"/>
+            <result property="content" column="requestExampleContent"/>
+        </collection>
+        <collection property="requestParameterList" ofType="com.cvte.po.ApiRequestParameter" javaType="java.util.List">
+            <result property="category" column="requestParameterCategory"/>
+            <result property="name" column="requestParameterName"/>
+            <result property="type" column="requestParameterType"/>
+            <result property="illustration" column="requestParameterIllustration"/>
+            <result property="example" column="requestParameterExample"/>
+        </collection>
+        <collection property="responseParameterList" ofType="com.cvte.po.ApiResponseParameter" javaType="java.util.List">
+            <result property="name" column="responseParameterName"/>
+            <result property="type" column="responseParameterType"/>
+            <result property="illustration" column="responseParameterIllustration"/>
+        </collection>
+    </resultMap>
+
+</mapper>

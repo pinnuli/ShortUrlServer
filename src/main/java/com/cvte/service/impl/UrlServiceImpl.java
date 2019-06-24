@@ -1,17 +1,19 @@
 package com.cvte.service.impl;
 
-import com.aliyun.openservices.ons.api.Message;
-import com.cvte.common.StaticConfig;
-import com.cvte.dao.UrlMapper;
 import com.cvte.po.Url;
+import com.cvte.po.UrlReport;
 import com.cvte.repository.UrlIndexRepository;
 import com.cvte.repository.UrlRepository;
 import com.cvte.rocketmq.RocketMQProducer;
 import com.cvte.service.UrlService;
 import com.cvte.util.ShortUrlUtil;
+import com.cvte.vo.CreateReportVo;
+import com.cvte.vo.VisitReportVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -27,9 +29,6 @@ public class UrlServiceImpl implements UrlService {
 
     @Autowired
     private UrlIndexRepository urlIndexRepository;
-
-    @Autowired
-    private UrlMapper urlMapper;
 
     @Autowired
     private RocketMQProducer rocketMQProducer;
@@ -50,17 +49,38 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public String visitShortUrl(String shortUrl) {
         String longUrl = urlRepository.getLongUrl(shortUrl);
-        if (longUrl != null) {
+        /*if (longUrl != null) {
             // 发送urlId到消息队列以更新访问数量
             Message message=new Message(StaticConfig.ROCKETMQ_TOPIC,"visit_count", shortUrl.getBytes());
             rocketMQProducer.sendNormalMessage(message, StaticConfig.ROCKETMQ_GROUP_ID);
-        }
+        }*/
+        urlRepository.increaseVisitCount(shortUrl);
         return longUrl;
     }
 
     @Override
     public void increaseVisitCount(String shortUrl) {
-        urlMapper.increaseVisitCount(shortUrl);
+        urlRepository.increaseVisitCount(shortUrl);
+    }
+
+    @Override
+    public List<CreateReportVo> getCreateReportData(Integer userId, Date startDate, Date endDate) {
+        List<UrlReport> reportList = urlRepository.getCreateReportData(userId, startDate, endDate);
+        List<CreateReportVo> createReportVoList = new ArrayList<>();
+        for (UrlReport urlReport : reportList) {
+            createReportVoList.add(new CreateReportVo(urlReport));
+        }
+        return createReportVoList;
+    }
+
+    @Override
+    public List<VisitReportVo> getVisitReportData(Integer userId, Date startDate, Date endDate) {
+        List<UrlReport> reportList = urlRepository.getVisitReportData(userId, startDate, endDate);
+        List<VisitReportVo> visitReportVoList = new ArrayList<>();
+        for (UrlReport urlReport : reportList) {
+            visitReportVoList.add(new VisitReportVo(urlReport));
+        }
+        return visitReportVoList;
     }
 
     /**

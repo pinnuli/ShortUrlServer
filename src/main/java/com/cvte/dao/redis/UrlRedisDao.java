@@ -16,7 +16,7 @@ public class UrlRedisDao {
      */
     private static final String URL_KEY_PREFIX = "url_";
 
-    private Jedis jedis = new Jedis("106.14.224.12", 6379, 2000);
+    private Jedis jedis = new Jedis("106.14.224.12", 6379, 20000);
 
     {
         jedis.auth("123456");
