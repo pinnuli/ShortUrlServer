@@ -17,14 +17,14 @@ public class StaticConfig {
     public static final Integer SHORT_URL_LENGTH = 7;
 
     /**
-     * url缓存默认有效期
+     * url缓存有效期
      */
     public static final Integer URL_CACHE_EXPIRE = 259200;
 
     /**
-     * redis缓存默认有效期
+     * api信息缓存有效期
      */
-    public static final Integer DEFAULT_CACHE_EXPIRE = 259200;
+    public static final Integer API_INFO_CHCHE_EXPIRE = 259200;
 
     /**
      * rocketmq主题

@@ -26,7 +26,8 @@ public class UrlController {
     private UrlService urlService;
 
     @PostMapping("/creation")
-    public ServerResponse getShortUrl(@RequestAttribute User currentUser, @RequestParam String longUrl) throws IOException {
+    public ServerResponse getShortUrl(@RequestAttribute User currentUser, @RequestBody Map<String, String> parameter) throws IOException {
+        String longUrl = parameter.get("longUrl");
         String shortUrl = urlService.getShortUrl(currentUser.getUserId(), longUrl);
         Map<String, String> data = new HashMap<>();
         data.put("shortUrl", shortUrl);

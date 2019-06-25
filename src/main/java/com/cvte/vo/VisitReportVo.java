@@ -1,6 +1,7 @@
 package com.cvte.vo;
 
 import com.cvte.po.UrlReport;
+import com.cvte.util.DateTimeUtil;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,21 +14,21 @@ public class VisitReportVo implements Serializable{
 
     private static final long serialVersionUID = 3542392543894053992L;
 
-    private Date date;
+    private String date;
 
     private Integer visitCount;
 
     public VisitReportVo(UrlReport urlReport) {
-        this.date = urlReport.getDate();
+        this.date = DateTimeUtil.getDate(urlReport.getDate());
         this.visitCount = urlReport.getCount();
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = DateTimeUtil.getDate(date);
     }
 
     public Integer getVisitCount() {

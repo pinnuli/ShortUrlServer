@@ -1,6 +1,7 @@
 package com.cvte.vo;
 
 import com.cvte.po.UrlReport;
+import com.cvte.util.DateTimeUtil;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,21 +14,21 @@ public class CreateReportVo implements Serializable {
 
     private static final long serialVersionUID = 4187399300475351748L;
 
-    private Date createDate;
+    private String createDate;
 
     private Integer createCount;
 
     public CreateReportVo(UrlReport urlReport) {
-        this.createDate = urlReport.getDate();
+        this.createDate = DateTimeUtil.getDate(urlReport.getDate());
         this.createCount = urlReport.getCount();
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
     public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+        this.createDate = DateTimeUtil.getDate(createDate);
     }
 
     public Integer getCreateCount() {

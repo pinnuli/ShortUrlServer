@@ -21,10 +21,9 @@ public class DateTimeUtil {
     }
 
     public static Date getDateTimeFromString(String dateString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
-            date = sdf.parse(dateString);
+            date = DATE_FORMAT.parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -33,6 +32,10 @@ public class DateTimeUtil {
 
     public static Date getNextZeroTimeFromString(String dateString) {
         return getNextZeroTime(getDateTimeFromString(dateString));
+    }
+
+    public static String getDate(Date date) {
+        return DATE_FORMAT.format(date);
     }
 
     private static Date getNextZeroTime(Date date) {
