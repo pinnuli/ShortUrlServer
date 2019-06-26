@@ -1,4 +1,4 @@
-#### 项目接口域名：http://193.112.59.11:8080/scauCircle
+#### 项目接口域名：http://193.112.59.11:8080/shortUrl
 #### 接口规范说明: 
 - 接口域名请根据具体情况修改；
 - 接口提交参数如不做特别说明，均以JSON的方式提交数据，以JSON的格式返回结果。  
@@ -7,7 +7,7 @@
    `url`:			请求地址
   `description`:		接口描述
   `method`:		http请求方式
-  `login`:		该请求是否需要登录(is required janke-authorization in headers ?)
+  `login`:		该请求是否需要登录(is required token in headers ?)
   `argument`:		请求携带参数
   `key`:			参数名
   `isrequired`:		参数是否必须
@@ -21,11 +21,12 @@
 #### 注册接口
 - **url：** ` /user/register`
 - **description：**  用户注册
-- **mothod：** POST
+- **method：** POST
 - **login：** false
 - **request_argument：**
+
 |key|isrequired|type|illustration|
-|:----    |:---|:----- |-----   |
+|:----    |:---|:----- |:-----   |
 |username |是  |string |用户名   |
 |password |是  |string |密码     |
 
@@ -41,9 +42,10 @@
 #### 登录接口
 - **url：** ` /user/login`
 - **description：**  用户登录
-- **mothod：** POST
+- **method：** POST
 - **login：** false
 - **request_argument：**
+
 |key|isrequired|type|illustration|
 |:----    |:---|:----- |-----   |
 |username |是  |string |用户名   |
@@ -61,9 +63,9 @@
 ```
 
 #### 登出接口
-- **url：** ` /user/login`
+- **url：** ` /user/logout`
 - **description：**  用户退出登录
-- **mothod：** POST
+- **method：** POST
 - **login：** true
 - **response(success):**
 ``` 
@@ -76,7 +78,7 @@
 #### 短网址生成接口
 - **url：** ` /short_url/creation`
 - **description：**  生成短网址
-- **mothod：** POST
+- **method：** POST
 - **login：** true
 - **request_argument：**
 |key|isrequired|type|illustration|
@@ -98,7 +100,7 @@
 #### 短网址还原接口
 - **url：** ` /short_url/visit`
 - **description：**  还原短网址
-- **mothod：** GET
+- **method：** GET
 - **login：** true
 - **request_argument：**
 |key|isrequired|type|illustration|
@@ -119,7 +121,7 @@
 #### 短网址创建报表接口
 - **url：** ` /short_url/report/creation`
 - **description：**  查询时间段内短网址生成数量
-- **mothod：** GET
+- **method：** GET
 - **login：** true
 - **request_argument：**
 |key|isrequired|type|illustration|
@@ -160,9 +162,9 @@
 ```
 
 #### 短网址访问报表接口
-- **url：** ` /short_url/report/creation`
+- **url：** ` /short_url/report/visit`
 - **description：**  查询时间段内短网址访问数量
-- **mothod：** GET
+- **method：** GET
 - **login：** true
 - **request_argument：**
 |key|isrequired|type|illustration|
@@ -205,7 +207,7 @@
 #### api信息接口
 - **url：** ` /short_url/api`
 - **description：**  api信息
-- **mothod：** GET
+- **method：** GET
 - **login：** true
 - **response(success):**
 ``` 

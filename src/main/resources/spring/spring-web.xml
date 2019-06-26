@@ -84,13 +84,13 @@
     </mvc:interceptors>
 
     <!-- 接口跨域配置 -->
-    <mvc:cors>
+    <!--<mvc:cors>
         <mvc:mapping path="/**"
                      allowed-origins="*"
                      allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
-                     allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+                     allowed-headers="Content-Type, Access-Control-Allow-Headers, Token, X-Requested-With, Authorization"
                      allow-credentials="true" />
-    </mvc:cors>
+    </mvc:cors>-->
 
     <!--&lt;!&ndash; rocketmq配置 &ndash;&gt;
     <context:property-placeholder location="classpath:rocketmq.properties" />
