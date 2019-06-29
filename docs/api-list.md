@@ -10,7 +10,7 @@
   `login`:		该请求是否需要登录(is required token in headers ?)
   `argument`:		请求携带参数
   `key`:			参数名
-  `isrequired`:		参数是否必须
+  `is_required`:		参数是否必须
   `type`:			参数类型
   `illustration`：		参数说明
   `response`:		请求成功数据返回格式
@@ -25,7 +25,7 @@
 - **login：** false
 - **request_argument：**
 
-|key|isrequired|type|illustration|
+|key|is_required|type|illustration|
 |:----    |:---|:----- |:-----   |
 |username |是  |string |用户名   |
 |password |是  |string |密码     |
@@ -38,7 +38,6 @@
 }
 ```
 
-
 #### 登录接口
 - **url：** ` /user/login`
 - **description：**  用户登录
@@ -46,7 +45,7 @@
 - **login：** false
 - **request_argument：**
 
-|key|isrequired|type|illustration|
+|key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |username |是  |string |用户名   |
 |password |是  |string |密码     |
@@ -75,13 +74,136 @@
 }
 ```
 
+#### 获取用户信息接口
+- **url：** ` /user?page=`
+- **description：**  管理员获取普通用户信息接口
+- **method：** GET
+- **login：** true
+- **request_argument：**
+
+|key|is_required|type|illustration|
+|:----    |:---|:----- |-----   |
+|page |是  |int |页数   |
+
+- **response(success):**
+``` 
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+       "userList": [
+                   {
+                       "userId": 1,
+                       "username": hahahah,
+                       "createShortUrlCount": 100,
+                       "visitShortUrlCount": 10000,
+                       "isBlack":true
+                   },
+                   {
+                   
+                       "userId": 2,
+                       "username": hahahah,
+                       "createShortUrlCount": 100,
+                       "visitShortUrlCount": 10000,
+                       "isBlack":false
+                   }
+               ],
+      "pageInfo": {
+                  "totalNumber": 2,
+                  "currentPage": 1,
+                  "totalPage": 1,
+                  "pageNumber": 15,
+                  "dbIndex": 0,
+                  "dbNumber": 15
+      }
+  }
+}
+```
+
+#### 获取黑名单用户信息接口
+- **url：** ` /user/black_list`
+- **description：**  获取黑名单用户信息
+- **method：** GET
+- **login：** true
+- **response(success):**
+``` 
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+       "userList": [
+                   {
+                       "userId": 1,
+                       "username": hahahah,
+                       "createShortUrlCount": 100,
+                       "visitShortUrlCount": 10000,
+                       "isBlack":true
+                   },
+                   {
+                       "userId": 2,
+                       "username": hahahah,
+                       "createShortUrlCount": 100,
+                       "visitShortUrlCount": 10000,
+                       "isBlack":false
+                   }
+               ],
+      "pageInfo": {
+                  "totalNumber": 2,
+                  "currentPage": 1,
+                  "totalPage": 1,
+                  "pageNumber": 15,
+                  "dbIndex": 0,
+                  "dbNumber": 15
+      }
+  }
+}
+```
+
+#### 添加黑名单接口
+- **url：** ` /user/black_list`
+- **description：**  添加用户到黑名单
+- **method：** POST
+- **login：** true
+- **request_argument：**
+|key|is_required|type|illustration|
+|:----    |:---|:----- |-----   |
+|userId |是  |int |用户id   |
+
+- **response(success):**
+``` 
+{
+    "code": 200,
+    "message": "success",
+    "data": 
+}
+```
+
+#### 取消黑名单接口
+- **url：** ` /user/black_list`
+- **description：**  将用户从黑名单删除
+- **method：** DELETE
+- **login：** true
+- **request_argument：**
+|key|is_required|type|illustration|
+|:----    |:---|:----- |-----   |
+|userId |是  |int |用户id   |
+
+- **response(success):**
+``` 
+{
+    "code": 200,
+    "message": "success",
+    "data": 
+}
+```
+
 #### 短网址生成接口
 - **url：** ` /short_url/creation`
 - **description：**  生成短网址
 - **method：** POST
 - **login：** true
 - **request_argument：**
-|key|isrequired|type|illustration|
+|key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |longUrl |是  |string |长网址   |
 
@@ -103,7 +225,7 @@
 - **method：** GET
 - **login：** true
 - **request_argument：**
-|key|isrequired|type|illustration|
+|key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |shortUrl |是  |string |短网址   |
 
@@ -119,15 +241,16 @@
 ```
 
 #### 短网址创建报表接口
-- **url：** ` /short_url/report/creation`
+- **url：** ` /short_url/report/creation?userId=`
 - **description：**  查询时间段内短网址生成数量
 - **method：** GET
 - **login：** true
 - **request_argument：**
-|key|isrequired|type|illustration|
+|key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
-|startDate |是  |string |开始日期   |
-|endDate |是  |string |结束日期   |
+|userId |否  |int |用户id   |
+|startDate |是  |string |开始日期,格式为yyyy-MM-dd   |
+|endDate |是  |string |结束日期,格式为yyyy-MM-dd   |
 
 - **response(success):**
 ``` 
@@ -162,15 +285,16 @@
 ```
 
 #### 短网址访问报表接口
-- **url：** ` /short_url/report/visit`
+- **url：** ` /short_url/report/visit?userId=`
 - **description：**  查询时间段内短网址访问数量
 - **method：** GET
 - **login：** true
 - **request_argument：**
-|key|isrequired|type|illustration|
+|key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
-|startDate |是  |string |开始日期   |
-|endDate |是  |string |结束日期   |
+|userId |否  |int |用户id   |
+|startDate |是  |string |开始日期,格式为yyyy-MM-dd   |
+|endDate |是  |string |结束日期,格式为yyyy-MM-dd   |
 
 - **response(success):**
 ``` 
@@ -205,10 +329,14 @@
 ```
 
 #### api信息接口
-- **url：** ` /short_url/api`
+- **url：** ` /api?page=`
 - **description：**  api信息
 - **method：** GET
 - **login：** true
+- **request_argument：**
+|key|is_required|type|illustration|
+|:----    |:---|:----- |-----   |
+|page |是  |int |页数   |
 - **response(success):**
 ``` 
 {
@@ -217,6 +345,7 @@
     "data": {
         "apiList": [
             {
+                "apiId":1,
                 "illustration": "短网址还原接口",
                 "requestAddress": "http://localhost:8080/shortUrl/short_url/visit",
                 "requestMethod": "GET",
@@ -268,8 +397,168 @@
                     }
                 ]
             }
-        ]
+        ],
+        "pageInfo": {
+                          "totalNumber": 2,
+                          "currentPage": 1,
+                          "totalPage": 1,
+                          "pageNumber": 15,
+                          "dbIndex": 0,
+                          "dbNumber": 15
+        }
     }
 }
 ```
 
+#### 添加api信息接口
+- **url：** ` /api`
+- **description：**  添加api信息
+- **method：** POST
+- **login：** true
+- **response(success):**
+``` 
+{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "api": {
+            "illustration": "短网址还原接口",
+            "requestAddress": "http://localhost:8080/shortUrl/short_url/visit",
+            "requestMethod": "GET",
+            "contentType": "application/json; charset=UTF-8",
+            "requestBodyParameterList": [
+                {
+                    "name": "shortUrl",
+                    "type": "string",
+                    "illustration": "短网址",
+                    "example": "595gHD5"
+                }
+            ],
+            "requestHeaderParameterList": [
+                {
+                    "name": "Token",
+                    "type": "string",
+                    "illustration": "由数字和字母组成的32位字符",
+                    "example": "\"274e88761d6f47b2a718ea9df9d03afb\""
+                }
+            ],
+            "requestExampleList": [
+                {
+                    "language": "Java",
+                    "content": "    import java.io.BufferedReader;\r\n    import java.io.IOException;\r\n    import java.io.InputStreamReader;\r\n    import java.io.OutputStreamWriter;\r\n    import java.net.HttpURLConnection;\r\n    import java.net.URL;\r\n    \r\n    import com.google.gson.Gson;\r\n    import com.google.gson.annotations.SerializedName;\r\n    \r\n    public class BaiduDwz {\r\n        final static String CREATE_API = \"http://localhost:8080/shortUrl/short_url/creation\";\r\n        final static String TOKEN = \"你的token\"; // TODO:设置Token\r\n    \r\n        class UrlResponse {\r\n            @SerializedName(\"Code\")\r\n            private int code;\r\n    \r\n            @SerializedName(\"ErrMsg\")\r\n            private String errMsg;\r\n    \r\n            @SerializedName(\"LongUrl\")\r\n            private String longUrl;\r\n    \r\n            @SerializedName(\"ShortUrl\")\r\n            private String shortUrl;\r\n    \r\n            public int getCode() {\r\n                return code;\r\n            }\r\n    \r\n            public void setCode(int code) {\r\n                this.code = code;\r\n            }\r\n    \r\n            public String getErrMsg() {\r\n                return errMsg;\r\n            }\r\n    \r\n            public void setErrMsg(String errMsg) {\r\n                this.errMsg = errMsg;\r\n            }\r\n    \r\n            public String getLongUrl() {\r\n                return longUrl;\r\n            }\r\n    \r\n            public void setLongUrl(String longUrl) {\r\n                this.longUrl = longUrl;\r\n            }\r\n    \r\n            public String getShortUrl() {\r\n                return shortUrl;\r\n            }\r\n    \r\n            public void setShortUrl(String shortUrl) {\r\n                this.shortUrl = shortUrl;\r\n            }\r\n        }\r\n        /**\r\n         * 还原长网址短网址\r\n         *\r\n         * @param shortUrl 短网址\r\n         * @return  成功：长网址\r\n         *\r\n         */\r\n        public static String queryLongUrl(String shortUrl) {\r\n            String params = \"{\\\"shortUrl\\\":\\\"\"+ shortUrl + \"\\\"}\";\r\n    \r\n            BufferedReader reader = null;\r\n            try {\r\n                // 创建连接\r\n                URL url = new URL(CREATE_API);\r\n                HttpURLConnection connection = (HttpURLConnection) url.openConnection();\r\n                connection.setDoOutput(true);\r\n                connection.setDoInput(true);\r\n                connection.setUseCaches(false);\r\n                connection.setInstanceFollowRedirects(true);\r\n                connection.setRequestMethod(\"POST\"); // 设置请求方式\r\n                connection.setRequestProperty(\"Content-Type\", \"application/json\"); // 设置发送数据的格式\r\n                connection.setRequestProperty(\"Token\", TOKEN); // 设置发送数据的格式\");\r\n    \r\n                // 发起请求\r\n                connection.connect();\r\n                OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), \"UTF-8\"); // utf-8编码\r\n                out.append(params);\r\n                out.flush();\r\n                out.close();\r\n    \r\n                // 读取响应\r\n                reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), \"UTF-8\"));\r\n                String line;\r\n                String res = \"\";\r\n                while ((line = reader.readLine()) != null) {\r\n                    res += line;\r\n                }\r\n                reader.close();\r\n    \r\n                // 抽取生成长网址\r\n                UrlResponse urlResponse = new Gson().fromJson(res, UrlResponse.class);\r\n                if (urlResponse.getCode() == 0) {\r\n                    return urlResponse.getLongUrl();\r\n                } else {\r\n                    System.out.println(urlResponse.getErrMsg());\r\n                }\r\n    \r\n                return \"\"; // TODO：自定义错误信息\r\n            } catch (IOException e) {\r\n                // TODO\r\n                e.printStackTrace();\r\n            }\r\n            return \"\"; // TODO：自定义错误信息\r\n        }\r\n    \r\n        public static void main(String[] args) {\r\n            String res = queryLongUrl(\"你的短网址\");\r\n            System.out.println(res);\r\n    \r\n        }\r\n    \r\n    } "
+                },
+                {
+                    "language": "curl",
+                    "content": "    curl -H \"Content-Type:application/json\" -H \"Token: 你的token\" -X POST \"http://localhost:8080/shortUrl/short_url/creation\" -d '{\"shortUrl\":\"你的短网址\"}'"
+                },
+                {
+                    "language": "JavaScript",
+                    "content": "    var ajax = new XMLHttpRequest();\r\n    var token = '你的token';\r\n    var shortUrl = '你的短网址';\r\n\r\n    ajax.open('post','http://localhost:8080/shortUrl/short_url/creation', 'true');\r\n\r\n    ajax.setRequestHeader(\"Content-Type\", \"application/json\");\r\n    ajax.setRequestHeader(\"Token\", token);\r\n    // 发送请求\r\n    ajax.send(JSON.stringify({\r\n        shortUrl: shortUrl\r\n    }));\r\n\r\n    ajax.onreadystatechange = function () {\r\n        if (ajax.readyState === 4 && ajax.status === 200) {\r\n            // 短网址对应的长网址\r\n            console.log(ajax.responseText);\r\n        }\r\n"
+                },
+                {
+                    "language": "PHP",
+                    "content": "    <?php\r\n    $host = 'http://localhost:8080/shortUrl';\r\n    $path = '/short_url/creation';\r\n    $url = $host . $path;\r\n    $method = 'POST';\r\n    $content_type = 'application/json';\r\n    \r\n    // TODO: 设置Token\r\n    $token = '你的Token';\r\n    \r\n    // TODO：设置还原的短网址\r\n    $bodys = array('shortUrl'=>'你的短网址');\r\n\r\n    // 设置headers\r\n    $headers = array('Content-Type:'.$content_type, 'Token:'.$token);\r\n    \r\n    // 创建连接\r\n    $curl = curl_init($url);\r\n    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);\r\n    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);\r\n    curl_setopt($curl, CURLOPT_FAILONERROR, false);\r\n    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);\r\n    curl_setopt($curl, CURLOPT_HEADER, false);\r\n    curl_setopt($curl, CURLOPT_POST, true);\r\n    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($bodys));\r\n    \r\n    // 发送请求\r\n    $response = curl_exec($curl);\r\n    curl_close($curl);\r\n    \r\n    // 读取响应\r\n    var_dump($response);\r\n    ?>\r\n    "
+                },
+                {
+                    "language": "Python",
+                    "content": "    #!/usr/bin/python\r\n    # -*- coding: utf-8 -*-\r\n    import requests\r\n    import json\r\n    \r\n    host = 'http://localhost:8080/shortUrl'\r\n    path = '/short_url/creation'\r\n    url = host + path\r\n    method = 'POST'\r\n    content_type = 'application/json'\r\n    \r\n    # TODO: 设置Token\r\n    token = '你的token'\r\n    \r\n    # TODO：设置待还原的短网址\r\n    bodys = {'shortUrl':'你的短网址'}\r\n    \r\n    # 配置headers\r\n    headers = {'Content-Type':content_type, 'Token':token}\r\n    \r\n    # 发起请求\r\n    response = requests.post(url=url, data=json.dumps(bodys), headers=headers)\r\n    \r\n    # 读取响应\r\n    print(response.text)"
+                }
+            ],
+            "responseExample": "{\n    \"code\": 200,\n    \"message\": \"success\",\n    \"data\": {\n        \"longUrl\": \"https://blog.csdn.net/realjh/article/details/82048492\"\n    }\n}",
+            "responseParameterList": [
+                {
+                    "name": "shortUrl",
+                    "type": "string",
+                    "illustration": "短网址"
+                }
+            ]
+         }
+    }
+}
+```
+
+#### 修改api信息接口
+- **url：** ` /api`
+- **description：**  修改api信息
+- **method：** PUT
+- **login：** true
+- **response(success):**
+``` 
+{
+    "code": 200,
+    "message": "success",
+    "data": {
+        "api": {
+            "illustration": "短网址还原接口",
+            "requestAddress": "http://localhost:8080/shortUrl/short_url/visit",
+            "requestMethod": "GET",
+            "contentType": "application/json; charset=UTF-8",
+            "requestBodyParameterList": [
+                {
+                    "name": "shortUrl",
+                    "type": "string",
+                    "illustration": "短网址",
+                    "example": "595gHD5"
+                }
+            ],
+            "requestHeaderParameterList": [
+                {
+                    "name": "Token",
+                    "type": "string",
+                    "illustration": "由数字和字母组成的32位字符",
+                    "example": "\"274e88761d6f47b2a718ea9df9d03afb\""
+                }
+            ],
+            "requestExampleList": [
+                {
+                    "language": "Java",
+                    "content": "    import java.io.BufferedReader;\r\n    import java.io.IOException;\r\n    import java.io.InputStreamReader;\r\n    import java.io.OutputStreamWriter;\r\n    import java.net.HttpURLConnection;\r\n    import java.net.URL;\r\n    \r\n    import com.google.gson.Gson;\r\n    import com.google.gson.annotations.SerializedName;\r\n    \r\n    public class BaiduDwz {\r\n        final static String CREATE_API = \"http://localhost:8080/shortUrl/short_url/creation\";\r\n        final static String TOKEN = \"你的token\"; // TODO:设置Token\r\n    \r\n        class UrlResponse {\r\n            @SerializedName(\"Code\")\r\n            private int code;\r\n    \r\n            @SerializedName(\"ErrMsg\")\r\n            private String errMsg;\r\n    \r\n            @SerializedName(\"LongUrl\")\r\n            private String longUrl;\r\n    \r\n            @SerializedName(\"ShortUrl\")\r\n            private String shortUrl;\r\n    \r\n            public int getCode() {\r\n                return code;\r\n            }\r\n    \r\n            public void setCode(int code) {\r\n                this.code = code;\r\n            }\r\n    \r\n            public String getErrMsg() {\r\n                return errMsg;\r\n            }\r\n    \r\n            public void setErrMsg(String errMsg) {\r\n                this.errMsg = errMsg;\r\n            }\r\n    \r\n            public String getLongUrl() {\r\n                return longUrl;\r\n            }\r\n    \r\n            public void setLongUrl(String longUrl) {\r\n                this.longUrl = longUrl;\r\n            }\r\n    \r\n            public String getShortUrl() {\r\n                return shortUrl;\r\n            }\r\n    \r\n            public void setShortUrl(String shortUrl) {\r\n                this.shortUrl = shortUrl;\r\n            }\r\n        }\r\n        /**\r\n         * 还原长网址短网址\r\n         *\r\n         * @param shortUrl 短网址\r\n         * @return  成功：长网址\r\n         *\r\n         */\r\n        public static String queryLongUrl(String shortUrl) {\r\n            String params = \"{\\\"shortUrl\\\":\\\"\"+ shortUrl + \"\\\"}\";\r\n    \r\n            BufferedReader reader = null;\r\n            try {\r\n                // 创建连接\r\n                URL url = new URL(CREATE_API);\r\n                HttpURLConnection connection = (HttpURLConnection) url.openConnection();\r\n                connection.setDoOutput(true);\r\n                connection.setDoInput(true);\r\n                connection.setUseCaches(false);\r\n                connection.setInstanceFollowRedirects(true);\r\n                connection.setRequestMethod(\"POST\"); // 设置请求方式\r\n                connection.setRequestProperty(\"Content-Type\", \"application/json\"); // 设置发送数据的格式\r\n                connection.setRequestProperty(\"Token\", TOKEN); // 设置发送数据的格式\");\r\n    \r\n                // 发起请求\r\n                connection.connect();\r\n                OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), \"UTF-8\"); // utf-8编码\r\n                out.append(params);\r\n                out.flush();\r\n                out.close();\r\n    \r\n                // 读取响应\r\n                reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), \"UTF-8\"));\r\n                String line;\r\n                String res = \"\";\r\n                while ((line = reader.readLine()) != null) {\r\n                    res += line;\r\n                }\r\n                reader.close();\r\n    \r\n                // 抽取生成长网址\r\n                UrlResponse urlResponse = new Gson().fromJson(res, UrlResponse.class);\r\n                if (urlResponse.getCode() == 0) {\r\n                    return urlResponse.getLongUrl();\r\n                } else {\r\n                    System.out.println(urlResponse.getErrMsg());\r\n                }\r\n    \r\n                return \"\"; // TODO：自定义错误信息\r\n            } catch (IOException e) {\r\n                // TODO\r\n                e.printStackTrace();\r\n            }\r\n            return \"\"; // TODO：自定义错误信息\r\n        }\r\n    \r\n        public static void main(String[] args) {\r\n            String res = queryLongUrl(\"你的短网址\");\r\n            System.out.println(res);\r\n    \r\n        }\r\n    \r\n    } "
+                },
+                {
+                    "language": "curl",
+                    "content": "    curl -H \"Content-Type:application/json\" -H \"Token: 你的token\" -X POST \"http://localhost:8080/shortUrl/short_url/creation\" -d '{\"shortUrl\":\"你的短网址\"}'"
+                },
+                {
+                    "language": "JavaScript",
+                    "content": "    var ajax = new XMLHttpRequest();\r\n    var token = '你的token';\r\n    var shortUrl = '你的短网址';\r\n\r\n    ajax.open('post','http://localhost:8080/shortUrl/short_url/creation', 'true');\r\n\r\n    ajax.setRequestHeader(\"Content-Type\", \"application/json\");\r\n    ajax.setRequestHeader(\"Token\", token);\r\n    // 发送请求\r\n    ajax.send(JSON.stringify({\r\n        shortUrl: shortUrl\r\n    }));\r\n\r\n    ajax.onreadystatechange = function () {\r\n        if (ajax.readyState === 4 && ajax.status === 200) {\r\n            // 短网址对应的长网址\r\n            console.log(ajax.responseText);\r\n        }\r\n"
+                },
+                {
+                    "language": "PHP",
+                    "content": "    <?php\r\n    $host = 'http://localhost:8080/shortUrl';\r\n    $path = '/short_url/creation';\r\n    $url = $host . $path;\r\n    $method = 'POST';\r\n    $content_type = 'application/json';\r\n    \r\n    // TODO: 设置Token\r\n    $token = '你的Token';\r\n    \r\n    // TODO：设置还原的短网址\r\n    $bodys = array('shortUrl'=>'你的短网址');\r\n\r\n    // 设置headers\r\n    $headers = array('Content-Type:'.$content_type, 'Token:'.$token);\r\n    \r\n    // 创建连接\r\n    $curl = curl_init($url);\r\n    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);\r\n    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);\r\n    curl_setopt($curl, CURLOPT_FAILONERROR, false);\r\n    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);\r\n    curl_setopt($curl, CURLOPT_HEADER, false);\r\n    curl_setopt($curl, CURLOPT_POST, true);\r\n    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($bodys));\r\n    \r\n    // 发送请求\r\n    $response = curl_exec($curl);\r\n    curl_close($curl);\r\n    \r\n    // 读取响应\r\n    var_dump($response);\r\n    ?>\r\n    "
+                },
+                {
+                    "language": "Python",
+                    "content": "    #!/usr/bin/python\r\n    # -*- coding: utf-8 -*-\r\n    import requests\r\n    import json\r\n    \r\n    host = 'http://localhost:8080/shortUrl'\r\n    path = '/short_url/creation'\r\n    url = host + path\r\n    method = 'POST'\r\n    content_type = 'application/json'\r\n    \r\n    # TODO: 设置Token\r\n    token = '你的token'\r\n    \r\n    # TODO：设置待还原的短网址\r\n    bodys = {'shortUrl':'你的短网址'}\r\n    \r\n    # 配置headers\r\n    headers = {'Content-Type':content_type, 'Token':token}\r\n    \r\n    # 发起请求\r\n    response = requests.post(url=url, data=json.dumps(bodys), headers=headers)\r\n    \r\n    # 读取响应\r\n    print(response.text)"
+                }
+            ],
+            "responseExample": "{\n    \"code\": 200,\n    \"message\": \"success\",\n    \"data\": {\n        \"longUrl\": \"https://blog.csdn.net/realjh/article/details/82048492\"\n    }\n}",
+            "responseParameterList": [
+                {
+                    "name": "shortUrl",
+                    "type": "string",
+                    "illustration": "短网址"
+                }
+            ]
+         }
+    }
+}
+```
+
+#### 删除api信息接口
+- **url：** ` /api`
+- **description：**  删除api信息
+- **method：** DELETE
+- **login：** true
+- **request_argument：**
+|key|is_required|type|illustration|
+|:----    |:---|:----- |-----   |
+|apiId |是  |int |API的id   |
+
+- **response(success):**
+``` 
+{
+    "code": 200,
+    "message": "success",
+    "data": 
+}
+```
