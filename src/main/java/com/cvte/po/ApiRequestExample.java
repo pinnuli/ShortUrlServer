@@ -12,7 +12,7 @@ public class ApiRequestExample implements Serializable {
 
     private Integer exampleId;
 
-    private String apiId;
+    private Integer apiId;
 
     private String language;
 
@@ -26,11 +26,11 @@ public class ApiRequestExample implements Serializable {
         this.exampleId = exampleId;
     }
 
-    public String getApiId() {
+    public Integer getApiId() {
         return apiId;
     }
 
-    public void setApiId(String apiId) {
+    public void setApiId(Integer apiId) {
         this.apiId = apiId;
     }
 
@@ -49,4 +49,5 @@ public class ApiRequestExample implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
 }

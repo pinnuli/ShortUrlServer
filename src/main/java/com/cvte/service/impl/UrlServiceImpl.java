@@ -1,7 +1,7 @@
 package com.cvte.service.impl;
 
 import com.cvte.po.Url;
-import com.cvte.po.UrlReport;
+import com.cvte.po.UrlDateReport;
 import com.cvte.repository.UrlIndexRepository;
 import com.cvte.repository.UrlRepository;
 import com.cvte.rocketmq.RocketMQProducer;
@@ -65,20 +65,20 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     public List<CreateReportVo> getCreateReportData(Integer userId, Date startDate, Date endDate) {
-        List<UrlReport> reportList = urlRepository.getCreateReportData(userId, startDate, endDate);
+        List<UrlDateReport> reportList = urlRepository.getCreateReportData(userId, startDate, endDate);
         List<CreateReportVo> createReportVoList = new ArrayList<>();
-        for (UrlReport urlReport : reportList) {
-            createReportVoList.add(new CreateReportVo(urlReport));
+        for (UrlDateReport urlDateReport : reportList) {
+            createReportVoList.add(new CreateReportVo(urlDateReport));
         }
         return createReportVoList;
     }
 
     @Override
     public List<VisitReportVo> getVisitReportData(Integer userId, Date startDate, Date endDate) {
-        List<UrlReport> reportList = urlRepository.getVisitReportData(userId, startDate, endDate);
+        List<UrlDateReport> reportList = urlRepository.getVisitReportData(userId, startDate, endDate);
         List<VisitReportVo> visitReportVoList = new ArrayList<>();
-        for (UrlReport urlReport : reportList) {
-            visitReportVoList.add(new VisitReportVo(urlReport));
+        for (UrlDateReport urlDateReport : reportList) {
+            visitReportVoList.add(new VisitReportVo(urlDateReport));
         }
         return visitReportVoList;
     }

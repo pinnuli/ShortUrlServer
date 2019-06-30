@@ -13,9 +13,11 @@ import java.util.List;
  * @author pinnuli
  * @date 2019/6/25
  */
-public class ApiVo implements Serializable{
+public class DetailApiVo implements Serializable{
 
     private static final long serialVersionUID = -8813883619650408687L;
+
+    private Integer apiId;
 
     private String illustration;
 
@@ -35,7 +37,8 @@ public class ApiVo implements Serializable{
 
     private List<ApiResponseParameterVo> responseParameterList;
 
-    public ApiVo(Api api) {
+    public DetailApiVo(Api api) {
+        this.apiId = api.getApiId();
         this.contentType = api.getContentType();
         this.illustration = api.getIllustration();
         this.requestAddress = api.getRequestAddress();
@@ -58,6 +61,14 @@ public class ApiVo implements Serializable{
         for (ApiResponseParameter apiResponseParameter : api.getResponseParameterList()) {
             this.responseParameterList.add(new ApiResponseParameterVo(apiResponseParameter));
         }
+    }
+
+    public Integer getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(Integer apiId) {
+        this.apiId = apiId;
     }
 
     public String getIllustration() {

@@ -19,7 +19,7 @@
         WHERE short_url = #{shortUrl)}
     </update>
 
-    <select id="selectCreateReportByUserIdAndDate" resultType="com.cvte.po.UrlReport">
+    <select id="selectCreateReportByUserIdAndDate" resultType="com.cvte.po.UrlDateReport">
         SELECT
             COUNT(short_url)  AS count,
             DATE(create_time) AS date
@@ -29,13 +29,81 @@
         GROUP BY DATE(create_time)
     </select>
 
-    <select id="selectVisitReportByUserIdAndDate" resultType="com.cvte.po.UrlReport">
+    <select id="selectVisitReportByUserIdAndDate" resultType="com.cvte.po.UrlDateReport">
         SELECT
-        sum(visit_count)  AS count,
-        DATE(create_time) AS date
+            sum(visit_count)  AS count,
+            DATE(create_time) AS date
         FROM sc_url_info
         WHERE
-        user_id = #{userId} AND create_time BETWEEN #{startDate} AND #{endDate}
+            user_id = #{userId} AND create_time BETWEEN #{startDate} AND #{endDate}
         GROUP BY DATE(create_time)
+    </select>
+
+    <select id="selectCreateAndVisitCountByUserId" parameterType="int" resultType="com.cvte.po.UrlTotalReport">
+        SELECT
+            count(url_id)    AS createShortUrlCount,
+            sum(visit_count) AS visitShortUrlCount
+        FROM sc_url_info
+        WHERE user_id = #{userId}
+    </select>
+
+    <resultMap id="urlTotalReportMap" type="com.cvte.po.UrlTotalReport">
+        <result column="userId" property="userId" javaType="INTEGER"/>
+        <result column="createShortUrlCount" property="createShortUrlCount" javaType="INTEGER"/>
+        <result column="visitShortUrlCount" property="visitShortUrlCount" javaType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectCreateAndVisitCountByPage" parameterType="com.cvte.util.PageUtil"
+            resultMap="urlTotalReportMap">
+        SELECT
+            user_id AS userId,
+            count(url_id)    AS createShortUrlCount,
+            sum(visit_count) AS visitShortUrlCount
+        FROM sc_url_info
+        WHERE user_id IN
+              (SELECT t.user_id
+               FROM
+                   (SELECT user_id
+                    FROM sc_user_info
+                    WHERE is_deleted = 0
+                    LIMIT #{dbIndex}, #{dbNumber}) AS t
+              )
+        GROUP BY user_id
+    </select>
+
+    <select id="selectBlackCreateAndVisitCountByPage" parameterType="com.cvte.util.PageUtil"
+            resultMap="urlTotalReportMap">
+        SELECT
+        user_id AS userId,
+        count(url_id)    AS createShortUrlCount,
+        sum(visit_count) AS visitShortUrlCount
+        FROM sc_url_info
+        WHERE user_id IN
+        (SELECT t.user_id
+        FROM
+        (SELECT user_id
+        FROM sc_user_info
+        WHERE is_deleted = 0 AND is_black = 1
+        LIMIT #{dbIndex}, #{dbNumber}) AS t
+        )
+        GROUP BY user_id
+    </select>
+
+    <select id="selectAdminCreateAndVisitCountByPage" parameterType="com.cvte.util.PageUtil"
+            resultMap="urlTotalReportMap">
+        SELECT
+        user_id AS userId,
+        count(url_id)    AS createShortUrlCount,
+        sum(visit_count) AS visitShortUrlCount
+        FROM sc_url_info
+        WHERE user_id IN
+        (SELECT t.user_id
+        FROM
+        (SELECT user_id
+        FROM sc_user_info
+        WHERE is_deleted = 0 AND is_admin = 1
+        LIMIT #{dbIndex}, #{dbNumber}) AS t
+        )
+        GROUP BY user_id
     </select>
 </mapper>

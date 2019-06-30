@@ -35,4 +35,6 @@ public class StaticConfig {
      * rocketmq分组id
      */
     public static final String ROCKETMQ_GROUP_ID = "GID_URL";
+
+    public static final Integer PAGE_NUMBER = 15;
 }

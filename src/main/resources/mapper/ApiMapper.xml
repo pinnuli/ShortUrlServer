@@ -2,52 +2,164 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cvte.dao.ApiMapper">
 
-    <select id="selectApiList" resultMap="apiMap">
-        SELECT
-            ai.illustration AS apiIllustration,
-            ai.request_address AS requestAddress,
-            ai.request_method AS requestMethod,
-            ai.content_type AS contentType,
-            ai.response_example AS responseExample,
-            are.language AS requestExampleLanguage,
-            are.content AS requestExampleContent,
-            arp.category AS requestParameterCategory,
-            arp.name AS requestParameterName,
-            arp.type AS requestParameterType,
-            arp.illustration AS requestParameterIllustration,
-            arp.example AS requestParameterExample,
-            arsp.name AS responseParameterName,
-            arsp.type AS responseParameterType,
-            arsp.illustration AS responseParameterIllustration
-        FROM
-            sc_api_info ai
-            LEFT JOIN sc_api_request_example are ON ai.api_id = are.api_id
-            LEFT JOIN sc_api_request_parameter arp ON ai.api_id = arp.api_id
-            LEFT JOIN sc_api_response_parameter arsp ON ai.api_id = arsp.api_id
-    </select>
-
     <resultMap id="apiMap" type="com.cvte.po.Api">
+        <result property="apiId" column="apiId"/>
         <result property="illustration" column="apiIllustration"/>
         <result property="requestAddress" column="requestAddress"/>
         <result property="requestMethod" column="requestMethod"/>
         <result property="contentType" column="contentType"/>
         <result property="responseExample" column="responseExample"/>
         <collection property="requestExampleList" ofType="com.cvte.po.ApiRequestExample" javaType="java.util.List">
+            <result property="apiId" column="requestExampleApiId"/>
             <result property="language" column="requestExampleLanguage"/>
             <result property="content" column="requestExampleContent"/>
         </collection>
         <collection property="requestParameterList" ofType="com.cvte.po.ApiRequestParameter" javaType="java.util.List">
+            <result property="apiId" column="requestParameterId"/>
             <result property="category" column="requestParameterCategory"/>
             <result property="name" column="requestParameterName"/>
             <result property="type" column="requestParameterType"/>
             <result property="illustration" column="requestParameterIllustration"/>
             <result property="example" column="requestParameterExample"/>
         </collection>
-        <collection property="responseParameterList" ofType="com.cvte.po.ApiResponseParameter" javaType="java.util.List">
+        <collection property="responseParameterList" ofType="com.cvte.po.ApiResponseParameter"
+                    javaType="java.util.List">
+            <result property="apiId" column="responseParameterApiId"/>
             <result property="name" column="responseParameterName"/>
             <result property="type" column="responseParameterType"/>
             <result property="illustration" column="responseParameterIllustration"/>
         </collection>
     </resultMap>
 
+    <select id="selectDetailApi" parameterType="int" resultMap="apiMap">
+        SELECT
+            ai.api_id           AS apiId,
+            ai.illustration     AS apiIllustration,
+            ai.request_address  AS requestAddress,
+            ai.request_method   AS requestMethod,
+            ai.content_type     AS contentType,
+            ai.response_example AS responseExample,
+            are.api_id          AS requestExampleApiId,
+            are.language        AS requestExampleLanguage,
+            are.content         AS requestExampleContent,
+            arp.api_id          AS requestParameterId,
+            arp.category        AS requestParameterCategory,
+            arp.name            AS requestParameterName,
+            arp.type            AS requestParameterType,
+            arp.illustration    AS requestParameterIllustration,
+            arp.example         AS requestParameterExample,
+            arsp.api_id         AS responseParameterApiId,
+            arsp.name           AS responseParameterName,
+            arsp.type           AS responseParameterType,
+            arsp.illustration   AS responseParameterIllustration
+        FROM
+            sc_api_info ai, sc_api_request_example are, sc_api_request_parameter arp, sc_api_response_parameter arsp
+        WHERE
+            ai.is_deleted = 0
+            AND are.is_deleted = 0
+            AND arp.is_deleted = 0
+            AND arsp.is_deleted = 0
+            AND ai.api_id = #{apiId}
+            AND are.api_id = #{apiId}
+            AND arp.api_id = #{apiId}
+            AND arsp.api_id = #{apiId}
+    </select>
+
+    <select id="selectDetailApiList" resultMap="apiMap">
+        SELECT
+            ai.api_id           AS apiId,
+            ai.illustration     AS apiIllustration,
+            ai.request_address  AS requestAddress,
+            ai.request_method   AS requestMethod,
+            ai.content_type     AS contentType,
+            ai.response_example AS responseExample,
+            are.api_id          AS requestExampleApiId,
+            are.language        AS requestExampleLanguage,
+            are.content         AS requestExampleContent,
+            arp.api_id          AS requestParameterId,
+            arp.category        AS requestParameterCategory,
+            arp.name            AS requestParameterName,
+            arp.type            AS requestParameterType,
+            arp.illustration    AS requestParameterIllustration,
+            arp.example         AS requestParameterExample,
+            arsp.api_id         AS responseParameterApiId,
+            arsp.name           AS responseParameterName,
+            arsp.type           AS responseParameterType,
+            arsp.illustration   AS responseParameterIllustration
+        FROM
+            sc_api_info ai
+            LEFT JOIN sc_api_request_example are ON ai.api_id = are.api_id
+            LEFT JOIN sc_api_request_parameter arp ON ai.api_id = arp.api_id
+            LEFT JOIN sc_api_response_parameter arsp ON ai.api_id = arsp.api_id
+        WHERE ai.is_deleted = 0
+              AND are.is_deleted = 0
+              AND arp.is_deleted = 0
+              AND arsp.is_deleted = 0
+    </select>
+
+    <select id="selectOutlineApiList" resultType="com.cvte.po.Api">
+        SELECT
+            api_id,
+            illustration,
+            request_address,
+            request_method,
+            content_type
+        FROM
+            sc_api_info
+        WHERE is_deleted = 0
+    </select>
+
+    <insert id="insertApi" parameterType="com.cvte.po.Api" useGeneratedKeys="true" keyProperty="apiId">
+        INSERT INTO sc_api_info (illustration, request_address, request_method, content_type, response_example)
+        VALUES (#{illustration}, #{requestAddress}, #{requestMethod}, #{contentType}, #{responseExample})
+    </insert>
+
+    <update id="updateApi" parameterType="com.cvte.po.Api">
+        UPDATE sc_api_info
+        SET
+            illustration     = #{illustration},
+            request_address  = #{requestAddress},
+            request_method   = #{requestMethod},
+            content_type     = #{contentType},
+            response_example = #{responseExample}
+        WHERE api_id = #{apiId} AND is_deleted = 0
+    </update>
+
+    <insert id="insertOrUpdateRequestExample" parameterType="com.cvte.po.ApiRequestExample">
+        INSERT INTO sc_api_request_example(language, content, api_id)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.language}, #{item.content}, #{item.apiId})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        language = VALUES(language), content = VALUES(content)
+    </insert>
+
+    <insert id="insertOrUpdateRequestParameter" parameterType="com.cvte.po.ApiRequestParameter">
+        INSERT INTO sc_api_request_parameter(category, name, type, is_required, illustration, example, api_id)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.category}, #{item.name}, #{item.type}, #{item.isRequired}, #{item.illustration}, #{item.example},
+            #{item.apiId})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        category = VALUES(category), name = VALUES(name), type = VALUES(type), is_required = VALUES(is_required),
+        illustration = VALUES(illustration), example = VALUES(example)
+    </insert>
+
+    <insert id="insertOrUpdateResponseParameter" parameterType="com.cvte.po.ApiResponseParameter">
+        INSERT INTO sc_api_response_parameter(api_id, name, type, illustration)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.apiId}, #{item.name}, #{item.type}, #{item.illustration})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        name = VALUES(name), type = VALUES(type), illustration = VALUES(illustration)
+    </insert>
+
+    <update id="deleteApi" parameterType="int">
+        UPDATE sc_api_info
+        SET is_deleted = 1
+        WHERE api_id = #{apiId}
+    </update>
 </mapper>

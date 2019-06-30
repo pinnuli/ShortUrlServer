@@ -81,6 +81,24 @@
             <mvc:mapping path="/url/short_url" />
             <bean class="com.cvte.interceptor.BlackListInterceptor" />
         </mvc:interceptor>
+
+        <!--管理员拦截器-->
+        <mvc:interceptor>
+            <!-- 进行拦截：/**表示拦截所有controller -->
+            <mvc:mapping path="/**" />
+            <!-- 不进行拦截 -->
+            <mvc:exclude-mapping path="/user/login" />
+            <mvc:exclude-mapping path="/user/register" />
+            <mvc:exclude-mapping path="/user/logout" />
+            <mvc:exclude-mapping path="/short_url/creation"/>
+            <mvc:exclude-mapping path="/short_url/visit"/>
+            <mvc:exclude-mapping path="/short_url/report/creation"/>
+            <mvc:exclude-mapping path="/short_url/report/visit"/>
+            <mvc:exclude-mapping path="/api/detail"/>
+            <mvc:exclude-mapping path="/api/outline"/>
+
+            <bean class="com.cvte.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
     </mvc:interceptors>
 
     <!-- 接口跨域配置 -->

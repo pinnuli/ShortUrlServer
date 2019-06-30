@@ -22,6 +22,10 @@ public class ApiRequestParameter implements Serializable{
 
     private String example;
 
+    private Integer apiId;
+
+    private Boolean isRequired;
+
     public Integer getParameterId() {
         return parameterId;
     }
@@ -68,5 +72,21 @@ public class ApiRequestParameter implements Serializable{
 
     public void setExample(String example) {
         this.example = example;
+    }
+
+    public Integer getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(Integer apiId) {
+        this.apiId = apiId;
+    }
+
+    public Boolean getIsRequired() {
+        return isRequired;
+    }
+
+    public void setIsRequired(Boolean required) {
+        isRequired = required;
     }
 }

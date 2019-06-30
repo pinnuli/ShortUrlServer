@@ -43,31 +43,29 @@ public class UrlController {
     }
 
     @GetMapping("/report/creation")
-    public ServerResponse getCreateReport(@RequestAttribute User currentUser, @RequestParam String startDate, @RequestParam String endDate) {
+    public ServerResponse getCreateReport(@RequestAttribute User currentUser,
+                                          @RequestParam(required = false) Integer userId,
+                                          @RequestParam String startDate,
+                                          @RequestParam String endDate) {
         Date startDateTime = DateTimeUtil.getDateTimeFromString(startDate);
         Date endDateTime = DateTimeUtil.getNextZeroTimeFromString(endDate);
+        userId = userId == null ? currentUser.getUserId() : userId;
         Map<String, Object> data = new HashMap<>();
-        data.put("createReportList", urlService.getCreateReportData(currentUser.getUserId(), startDateTime, endDateTime));
+        data.put("createReportList", urlService.getCreateReportData(userId, startDateTime, endDateTime));
         return ServerResponse.createBySuccess(data);
     }
 
     @GetMapping("/report/visit")
-    public ServerResponse getVisitReport(@RequestAttribute User currentUser, @RequestParam String startDate, @RequestParam String endDate) {
+    public ServerResponse getVisitReport(@RequestAttribute User currentUser,
+                                         @RequestParam(required = false) Integer userId,
+                                         @RequestParam String startDate,
+                                         @RequestParam String endDate) {
         Date startDateTime = DateTimeUtil.getDateTimeFromString(startDate);
         Date endDateTime = DateTimeUtil.getNextZeroTimeFromString(endDate);
+        userId = userId == null ? currentUser.getUserId() : userId;
         Map<String, Object> data = new HashMap<>();
-        data.put("visitReportList", urlService.getVisitReportData(currentUser.getUserId(), startDateTime, endDateTime));
+        data.put("visitReportList", urlService.getVisitReportData(userId, startDateTime, endDateTime));
         return ServerResponse.createBySuccess(data);
     }
-
-    private String getAbsoluteUrl(HttpServletRequest request, String subPath) {
-        StringBuffer url = request.getRequestURL();
-        return url.delete(url.length() - request.getRequestURI().length(), url.length())
-                .append(request.getServletContext().getContextPath())
-                .append("/")
-                .append(subPath)
-                .toString();
-    }
-
 
 }

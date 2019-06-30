@@ -3,7 +3,7 @@ package com.cvte.repository;
 import com.cvte.dao.UrlMapper;
 import com.cvte.dao.redis.UrlRedisDao;
 import com.cvte.po.Url;
-import com.cvte.po.UrlReport;
+import com.cvte.po.UrlDateReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +57,11 @@ public class UrlRepository {
         urlMapper.increaseVisitCount(shortUrl);
     }
     
-    public List<UrlReport> getCreateReportData(Integer userId, Date startDate, Date endDate) {
+    public List<UrlDateReport> getCreateReportData(Integer userId, Date startDate, Date endDate) {
         return urlMapper.selectCreateReportByUserIdAndDate(userId, startDate, endDate);
     }
 
-    public List<UrlReport> getVisitReportData(Integer userId, Date startDate, Date endDate) {
+    public List<UrlDateReport> getVisitReportData(Integer userId, Date startDate, Date endDate) {
         return urlMapper.selectVisitReportByUserIdAndDate(userId, startDate, endDate);
     }
 }

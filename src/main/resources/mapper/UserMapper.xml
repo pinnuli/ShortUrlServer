@@ -3,12 +3,12 @@
 <mapper namespace="com.cvte.dao.UserMapper">
 
   <select id="getUserById" parameterType="int" resultType="com.cvte.po.User">
-        select user_id, username, is_black from sc_user_info
+        select user_id, username, is_black, is_admin from sc_user_info
         where user_id = #{userId} and is_deleted = 0
   </select>
 
     <select id="getUserByUserName" parameterType="String" resultType="com.cvte.po.User">
-        select user_id, username, password, is_black from sc_user_info
+        select user_id, username, password, is_admin from sc_user_info
         where username = #{username} and is_deleted = 0
     </select>
 
@@ -17,8 +17,71 @@
         WHERE username = #{username} AND is_deleted = 0
     </select>
 
+    <select id="selectAllUser" parameterType="com.cvte.util.PageUtil" resultType="com.cvte.po.User">
+        SELECT user_id, username, is_admin, is_black
+        FROM sc_user_info
+        WHERE is_deleted = 0
+        LIMIT #{dbIndex}, #{dbNumber}
+    </select>
+
+    <select id="selectAllUserCount" resultType="int">
+        SELECT count(user_id)
+        FROM sc_user_info
+        WHERE is_deleted = 0
+    </select>
+
+    <select id="selectBlackUser" parameterType="com.cvte.util.PageUtil" resultType="com.cvte.po.User">
+        SELECT user_id, username
+        FROM sc_user_info
+        WHERE is_deleted = 0 AND is_black = 1
+        LIMIT #{dbIndex}, #{dbNumber}
+    </select>
+
+    <select id="selectBlackUserCount" resultType="int">
+        SELECT count(user_id)
+        FROM sc_user_info
+        WHERE is_deleted = 0 AND is_black = 1
+    </select>
+
+    <select id="selectAdminUser" parameterType="com.cvte.util.PageUtil" resultType="com.cvte.po.User">
+        SELECT user_id, username
+        FROM sc_user_info
+        WHERE is_deleted = 0 AND is_admin = 1
+        LIMIT #{dbIndex}, #{dbNumber}
+    </select>
+
+    <select id="selectAdminUserCount" resultType="int">
+        SELECT count(user_id)
+        FROM sc_user_info
+        WHERE is_deleted = 0 AND is_admin = 1
+    </select>
+
     <insert id="insert" parameterType="com.cvte.po.User">
         INSERT INTO sc_user_info(username, password)
         VALUES (#{username}, #{password})
     </insert>
+
+    <update id="setAdminByUserId" parameterType="int">
+        UPDATE sc_user_info
+        SET is_admin = 1
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </update>
+
+    <update id="cancelAdminByUserId" parameterType="int">
+        UPDATE sc_user_info
+        SET is_admin = 0
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </update>
+
+    <update id="setBlackListByUserId" parameterType="int">
+        UPDATE sc_user_info
+        SET is_black = 1
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </update>
+
+    <update id="cancelBlackListByUserId" parameterType="int">
+        UPDATE sc_user_info
+        SET is_black = 0
+        WHERE user_id = #{userId} AND is_deleted = 0
+    </update>
 </mapper>

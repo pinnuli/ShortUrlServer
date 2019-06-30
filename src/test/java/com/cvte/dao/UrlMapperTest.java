@@ -1,5 +1,7 @@
 package com.cvte.dao;
 
+import com.cvte.po.UrlTotalReport;
+import com.cvte.util.PageUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 
 /**
@@ -24,11 +27,24 @@ public class UrlMapperTest {
     @Autowired
     private UrlMapper urlMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     private UrlIndexMapper urlIndexMapper;
 
     @Test
     public void testSelectReportDataByUserIdAndDate() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         log.info("size:{}", urlMapper.selectCreateReportByUserIdAndDate(3, sdf.parse("2019-06-14 00:00:00"), sdf.parse("2019-06-19 23:00:00")).size());
+    }
+
+    @Test
+    public void testSelectCreateAndVisitCountByPage() {
+        PageUtil pageUtil = new PageUtil(1);
+        pageUtil.setTotalNumber(userMapper.selectAllUserCount());
+        Map<Integer, UrlTotalReport> result = urlMapper.selectCreateAndVisitCountByPage(pageUtil);
+        System.out.println("size: " + result.size());
+        System.out.println(result);
+        System.out.println(result.get(1));
     }
 }

@@ -1,7 +1,10 @@
 package com.cvte.service;
 
 import com.cvte.po.User;
+import com.cvte.util.PageUtil;
 import com.cvte.vo.UserVo;
+
+import java.util.List;
 
 /**
  * @author linxiaoyi
@@ -13,18 +16,26 @@ public interface UserService {
      * @param user 用户信息
      * @return token
      */
-    String login(User user);
+    UserVo login(User user);
 
     /**
      * @param userId 用户id
      */
     void logout(Integer userId);
 
-    /**
-     * @param userId 用户id
-     * @return 用户信息
-     */
-    UserVo getUserInfo(Integer userId);
-
     void register(User user);
+
+    List<UserVo> getUserList(PageUtil page);
+
+    List<UserVo> getBlackList(PageUtil page);
+
+    List<UserVo> getAdminList(PageUtil page);
+
+    void setAdmin(Integer userId);
+
+    void cancelAdmin(Integer userId);
+
+    void setBlackList(Integer userId);
+
+    void cancelBlackList(Integer userId);
 }

@@ -23,6 +23,10 @@ public class Api implements Serializable {
 
     private List<ApiRequestParameter> requestParameterList;
 
+    private List<ApiRequestParameter> requestBodyParameterList;
+
+    private List<ApiRequestParameter> requestHeaderParameterList;
+
     private List<ApiRequestExample> requestExampleList;
 
     private String responseExample;
@@ -75,6 +79,22 @@ public class Api implements Serializable {
 
     public void setRequestParameterList(List<ApiRequestParameter> requestParameterList) {
         this.requestParameterList = requestParameterList;
+    }
+
+    public List<ApiRequestParameter> getRequestBodyParameterList() {
+        return requestBodyParameterList;
+    }
+
+    public void setRequestBodyParameterList(List<ApiRequestParameter> requestBodyParameterList) {
+        this.requestBodyParameterList = requestBodyParameterList;
+    }
+
+    public List<ApiRequestParameter> getRequestHeaderParameterList() {
+        return requestHeaderParameterList;
+    }
+
+    public void setRequestHeaderParameterList(List<ApiRequestParameter> requestHeaderParameterList) {
+        this.requestHeaderParameterList = requestHeaderParameterList;
     }
 
     public List<ApiRequestExample> getRequestExampleList() {

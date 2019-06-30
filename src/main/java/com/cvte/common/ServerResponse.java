@@ -1,6 +1,7 @@
 package com.cvte.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 
@@ -8,6 +9,7 @@ import java.io.Serializable;
  * @author linxiaoyi
  * @date 2019/4/18
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServerResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 4635614821711991447L;

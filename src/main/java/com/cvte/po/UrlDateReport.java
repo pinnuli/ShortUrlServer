@@ -7,7 +7,7 @@ import java.util.Date;
  * author@ pinnuli
  * date@ 2019/6/24
  */
-public class UrlReport implements Serializable{
+public class UrlDateReport implements Serializable{
     private static final long serialVersionUID = 1987149075639889482L;
 
     private Date date;

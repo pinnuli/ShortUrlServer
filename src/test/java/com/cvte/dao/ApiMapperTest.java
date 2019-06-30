@@ -1,5 +1,7 @@
 package com.cvte.dao;
 
+import com.cvte.po.Api;
+import com.cvte.po.ApiRequestExample;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -9,7 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 
 /**
@@ -26,9 +28,43 @@ public class ApiMapperTest {
 
     @Test
     public void testSelectApiList() throws ParseException {
-        log.info("api->size:{},", apiMapper.selectApiList().size());
-        log.info("apiRequestExample->size:{},", apiMapper.selectApiList().get(0).getRequestExampleList().size());
-        log.info("apiRequestParameter->size:{},", apiMapper.selectApiList().get(0).getRequestParameterList().size());
-        log.info("apiResponseParameter->size:{},", apiMapper.selectApiList().get(0).getResponseParameterList().size());
+        List<Api> list = apiMapper.selectDetailApiList();
+        log.info("api->size:{},",list .size());
+        log.info("apiRequestExample->size:{},", apiMapper.selectDetailApiList().get(0).getRequestExampleList().size());
+        log.info("apiRequestParameter->size:{},", apiMapper.selectDetailApiList().get(0).getRequestParameterList().size());
+        log.info("apiResponseParameter->size:{},", apiMapper.selectDetailApiList().get(0).getResponseParameterList().size());
     }
+
+    @Test
+    public void testInsertApi() {
+        List<Api> apiList = apiMapper.selectOutlineApiList();
+        Api api = apiList.get(0);
+        api.setResponseExample("test1");
+        apiMapper.insertApi(api);
+        log.info("apiId:{}", api.getApiId());
+    }
+
+    @Test
+    public void testUpdateApi() {
+        List<Api> apiList = apiMapper.selectOutlineApiList();
+        Api api = apiList.get(0);
+        api.setResponseExample("test1");
+        apiMapper.updateApi(api);
+        log.info("apiId:{}", api.getApiId());
+    }
+
+    @Test
+    public void testInsertOrUpdateRequestExample() {
+        Api api = apiMapper.selectDetailApi(1);
+        ApiRequestExample apiRequestExample = new ApiRequestExample();
+        apiRequestExample.setLanguage("test");
+        apiRequestExample.setContent("test");
+        apiRequestExample.setApiId(1);
+        api.getRequestExampleList().get(5).setContent("testKotlin");
+        api.getRequestExampleList().add(apiRequestExample);
+        apiMapper.insertOrUpdateRequestExample(api.getRequestExampleList());
+        log.info("size:{}", api.getRequestExampleList().size());
+        log.info("apiId:{}", api.getApiId());
+    }
+
 }

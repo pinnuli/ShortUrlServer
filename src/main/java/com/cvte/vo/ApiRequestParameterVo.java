@@ -20,11 +20,14 @@ public class ApiRequestParameterVo implements Serializable {
 
     private String example;
 
+    private Boolean isRequired;
+
     public ApiRequestParameterVo(ApiRequestParameter apiRequestParameter) {
         this.name = apiRequestParameter.getName();
         this.type = apiRequestParameter.getType();
         this.illustration = apiRequestParameter.getIllustration();
         this.example = apiRequestParameter.getExample();
+        this.isRequired = apiRequestParameter.getIsRequired();
     }
 
     public String getName() {

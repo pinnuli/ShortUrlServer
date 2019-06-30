@@ -16,7 +16,9 @@ import java.util.List;
 @Component
 public class ApiRedisDao {
 
-    private final static String API_INFO_SET = "api_info";
+    private final static String DETAIL_API_INFO_HASH = "detail_api_info";
+
+    private final static String OUTLINE_API_INFO_HASH = "outline_api_info";
 
     private Jedis jedis = new Jedis("106.14.224.12", 6379, 20000);
 
@@ -24,20 +26,48 @@ public class ApiRedisDao {
         jedis.auth("123456");
     }
 
-    public void setApiList(List<Api> apiInfoList) {
+    public void setDetailApiList(List<Api> apiInfoList) {
         for (Api api : apiInfoList) {
-            jedis.sadd(API_INFO_SET, JsonUtil.objectToJson(api));
+            jedis.hset(DETAIL_API_INFO_HASH, api.getApiId().toString(), JsonUtil.objectToJson(api));
         }
-        jedis.expire(API_INFO_SET, StaticConfig.API_INFO_CHCHE_EXPIRE);
+        jedis.expire(DETAIL_API_INFO_HASH, StaticConfig.API_INFO_CHCHE_EXPIRE);
         jedis.close();
     }
 
-    public List<Api> getApiList() {
+    public List<Api> getDetailApiList() {
         List<Api> result = new ArrayList<>();
-        for (String apiJsonString : jedis.smembers(API_INFO_SET)) {
+        for (String apiJsonString : jedis.hvals(DETAIL_API_INFO_HASH)) {
             result.add((Api)JsonUtil.jsonToObject(apiJsonString, Api.class));
         }
+        jedis.close();
         return result;
+    }
+
+    public void deleteDetailApiList() {
+        jedis.del(DETAIL_API_INFO_HASH);
+        jedis.close();
+    }
+
+    public void setOutlineApiList(List<Api> apiInfoList) {
+        for (Api api : apiInfoList) {
+            jedis.hset(OUTLINE_API_INFO_HASH, api.getApiId().toString(), JsonUtil.objectToJson(api));
+        }
+        jedis.expire(OUTLINE_API_INFO_HASH, StaticConfig.API_INFO_CHCHE_EXPIRE);
+        jedis.close();
+    }
+
+    public List<Api> getOutlineApiList() {
+        List<Api> result = new ArrayList<>();
+        for (String apiJsonString : jedis.smembers(OUTLINE_API_INFO_HASH)) {
+            result.add((Api)JsonUtil.jsonToObject(apiJsonString, Api.class));
+        }
+        jedis.close();
+        return result;
+    }
+
+    public void deleteOutlineApiList() {
+        jedis.del(OUTLINE_API_INFO_HASH);
+        jedis.close();
     }
 
 }

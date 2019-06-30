@@ -15,6 +15,8 @@ public class User implements Serializable {
 
     private Boolean isBlack;
 
+    private Boolean isAdmin;
+
     public String getPassword() {
         return password;
     }
@@ -53,5 +55,13 @@ public class User implements Serializable {
 
     public void setIsBlack(Boolean isBlack) {
         this.isBlack = isBlack;
+    }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 }

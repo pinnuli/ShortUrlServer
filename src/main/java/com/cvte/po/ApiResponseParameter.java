@@ -18,6 +18,8 @@ public class ApiResponseParameter implements Serializable{
 
     private String illustration;
 
+    private Integer apiId;
+
     public Integer getParameterId() {
         return parameterId;
     }
@@ -48,5 +50,13 @@ public class ApiResponseParameter implements Serializable{
 
     public void setIllustration(String illustration) {
         this.illustration = illustration;
+    }
+
+    public Integer getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(Integer apiId) {
+        this.apiId = apiId;
     }
 }
