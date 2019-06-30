@@ -132,6 +132,7 @@
 - **description：**  获取黑名单用户信息
 - **method：** GET
 - **login：** true
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |currentPage |是  |int |页数   |
@@ -174,6 +175,7 @@
 - **method：** POST
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |userId |是  |int |用户id   |
@@ -192,6 +194,7 @@
 - **method：** DELETE
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |userId |是  |int |用户id   |
@@ -210,6 +213,7 @@
 - **description：**  获取黑名单用户信息
 - **method：** GET
 - **login：** true
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |currentPage |是  |int |页数   |
@@ -247,6 +251,7 @@
 - **method：** POST
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |userId |是  |int |用户id   |
@@ -265,6 +270,7 @@
 - **method：** DELETE
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |userId |是  |int |用户id   |
@@ -283,6 +289,7 @@
 - **method：** POST
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |longUrl |是  |string |长网址   |
@@ -304,6 +311,7 @@
 - **method：** GET
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |shortUrl |是  |string |短网址   |
@@ -325,6 +333,7 @@
 - **method：** GET
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |userId |否  |int |用户id   |
@@ -369,6 +378,7 @@
 - **method：** GET
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |userId |否  |int |用户id   |
@@ -504,6 +514,7 @@
 - **method：** GET
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |apiId |是  |int |接口id   |
@@ -645,6 +656,7 @@
 - **method：** PUT
 - **login：** true
 - **request_argument**
+
 ``` 
 {
   "apiId":14,
@@ -726,6 +738,7 @@
 - **method：** DELETE
 - **login：** true
 - **request_argument：**
+
 |key|is_required|type|illustration|
 |:----    |:---|:----- |-----   |
 |apiId |是  |int |API的id   |
