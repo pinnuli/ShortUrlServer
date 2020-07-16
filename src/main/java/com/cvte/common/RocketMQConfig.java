@@ -13,8 +13,8 @@ import java.util.Properties;
 public class RocketMQConfig {
     public Properties getProperties(){
         Properties properties=new Properties();
-        properties.setProperty("AccessKey","LTAIZxEnyUgVzJZF");
-        properties.setProperty("SecretKey","SoXXVW9yEW3p0EcPIB9dDrX8MIzTQ2");
+        properties.setProperty("AccessKey","");
+        properties.setProperty("SecretKey","");
         //顺序消息消费超时时间
         properties.setProperty(PropertyKeyConst.SendMsgTimeoutMillis, "3000");
         // 顺序消息消费失败进行重试前的等待时间，单位(毫秒)
